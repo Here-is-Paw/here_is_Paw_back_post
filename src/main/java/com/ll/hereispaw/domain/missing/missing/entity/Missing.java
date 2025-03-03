@@ -2,9 +2,7 @@ package com.ll.hereispaw.domain.missing.missing.entity;
 
 import com.ll.hereispaw.domain.missing.Auhtor.entity.Author;
 import com.ll.hereispaw.global.jpa.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -42,17 +40,19 @@ public class Missing extends BaseEntity {
 
     @Column(length = 15)
     private String serialNumber;
-    private boolean gender;
-    private boolean neutered;
+    private int gender;
+    private int neutered;
     private int age;
-    private Timestamp lostDate;
+
+//    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    private LocalDateTime lostDate;
 
     @Column(columnDefinition = "TEXT")
     private String etc;
     private int reward;
-    private int state;
+    private int missingState;
 
-//    @NotNull
+    @NotNull
 //    @OneToMany
     private String pathUrl;
 
