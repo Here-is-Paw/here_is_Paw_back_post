@@ -1,14 +1,13 @@
 package com.ll.hereispaw.domain.missing.missing.service;
 
+import com.ll.hereispaw.domain.member.member.entity.Member;
 import com.ll.hereispaw.domain.missing.Auhtor.entity.Author;
 import com.ll.hereispaw.domain.missing.Auhtor.repository.AuthorRepository;
 import com.ll.hereispaw.domain.missing.missing.dto.request.MissingRequestDTO;
 import com.ll.hereispaw.domain.missing.missing.dto.response.MissingDTO;
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
-import com.ll.hereispaw.domain.member.member.entity.Member;
 import com.ll.hereispaw.global.error.ErrorCode;
-import com.ll.hereispaw.global.error.ErrorResponse;
 import com.ll.hereispaw.global.exception.CustomException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -70,6 +69,7 @@ public class MissingService {
 
             missingDTOS.add(
                     MissingDTO.builder()
+                            .id(missing.getId())
                             .name(missing.getName())
                             .breed(missing.getBreed())
                             .geo(missing.getGeo())
