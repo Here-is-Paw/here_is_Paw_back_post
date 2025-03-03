@@ -71,7 +71,7 @@ dependencies {
     testImplementation("org.springframework.kafka:spring-kafka-test")
 
     //docker-compose
-//    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
 }
 
