@@ -1,7 +1,6 @@
 package com.ll.hereispaw.domain.mapPost.mapPost.service;
 
 import com.ll.hereispaw.domain.find.find.repository.FindRepository;
-import com.ll.hereispaw.domain.mapPost.mapPost.dto.request.MapPostRequest;
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class MapPostService {
     private final MissingRepository missingRepository;
     private final FindRepository findRepository;
 
-    public List<Missing> allSearch(MapPostRequest mapPostRequest) {
-        return missingRepository.findWithinRadius(mapPostRequest.getLatitude(), mapPostRequest.getLongitude(), mapPostRequest.getRadius());
+    public List<Missing> allSearch(Double latitude, Double longitude, Double radius) {
+        return missingRepository.findWithinRadius(latitude, longitude, radius);
     }
 }
