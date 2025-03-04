@@ -21,7 +21,7 @@ public class PostDocument{
 
     public PostDocument(PostDto postDto) {
         this.id = postDto.getId();
-        this.post_id = postDto.getPost_primary();
+        this.post_id = postDto.getPost_id();
         this.name = postDto.getName();
         this.breed = postDto.getBreed();
         this.location = postDto.getLocation();

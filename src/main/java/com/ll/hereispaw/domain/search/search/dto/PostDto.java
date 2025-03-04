@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 public class PostDto {
     private String id;
-    private Long post_primary;
+    private Long post_id;
     private String name;
     private String breed;
     private String location;
@@ -33,7 +33,7 @@ public class PostDto {
     private void setFind(FindPost post) {
         log.debug("find : {}", post.getId());
         this.id = "find_" + post.getId();
-        this.post_primary = post.getId();
+        this.post_id = post.getId();
         this.name = post.getName();
         this.breed = post.getBreed();
         this.location = post.getLocation();
@@ -44,7 +44,7 @@ public class PostDto {
     private void setMissing(MissingDTO post) {
         log.debug("missing : {}", post.getId());
         this.id = "missing_" + post.getId();
-        this.post_primary = post.getId();
+        this.post_id = post.getId();
         this.name = post.getName();
         this.breed = post.getBreed();
         this.location = post.getLocation();

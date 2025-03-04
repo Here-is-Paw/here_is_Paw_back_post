@@ -47,6 +47,8 @@ public class InitData {
             @Transactional
             @Override
             public void run(ApplicationArguments args) throws JsonProcessingException {
+                postDocumentRepositoryImpl.clear("post");
+
                 if (memberService.count() > 0) return;
                 Member member1 = memberService.signup("user1", "1234", "유저1", "");
                 Member member2 = memberService.signup("user2", "1234", "유저2", "");
