@@ -2,15 +2,13 @@ package com.ll.hereispaw.domain.missing.missing.dto.response;
 
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class MissingDTO {
+public class MissingResponseDto {
     /**
      * 이름, 견종, 유기견 이미지, 지역, 좌표
      * 색상, 동물 등록 번호, 성별, 중성화 유무, 나이, 실종 날짜, 기타(특징), 사례금
@@ -22,37 +20,36 @@ public class MissingDTO {
     private String breed;
     private String geo;
     private String location;
-
-    private String color;
-    private String serialNumber;
-    private boolean gender;
-    private boolean neutered;
-    private int age;
-    private Timestamp lostDate;
-    private String etc;
-    private int reward;
-    private int state;
-
     private String pathUrl;
     private String nickname;
 
-    public MissingDTO(Missing missing) {
+    private String color;
+    private String serialNumber;
+    private Integer gender;
+    private Integer neutered;
+    private Integer age;
+    private LocalDateTime lostDate;
+    private String etc;
+    private Integer reward;
+    private Integer missingState;
+
+    public MissingResponseDto(Missing missing) {
         id = missing.getId();
         nickname = missing.getAuthor().getNickname();
         pathUrl = missing.getPathUrl();
 
         name = missing.getName();
         breed = missing.getBreed();
-        geo = missing.getGeo();
+        geo = missing.getGeo().toString();
         location = missing.getLocation();
         color = missing.getColor();
         serialNumber = missing.getSerialNumber();
-        gender = missing.isGender();
-        neutered = missing.isNeutered();
+        gender = missing.getGender();
+        neutered = missing.getNeutered();
         age = missing.getAge();
         lostDate = missing.getLostDate();
         etc = missing.getEtc();
         reward = missing.getReward();
-        state = missing.getState();
+        missingState = missing.getMissingState();
     }
 }

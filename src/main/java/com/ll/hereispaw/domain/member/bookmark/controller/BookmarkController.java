@@ -53,5 +53,4 @@ public class BookmarkController {
         bookmarkService.removeBookmark(bookmarkId);
         return GlobalResponse.success("삭제 성공");
     }
-
 }

@@ -102,6 +102,19 @@ public class FindController {
         response.put("findPostId", postId);
         return ResponseEntity.ok("발견 게시글 수정 성공");
     }
+/*
+    @PostMapping("/{postId}/chat")
+    public GlobalResponse<ChatRoomDto> Chat(@PathVariable("postId") Long postId, @LoginUser Member chatUser) {
+        FindDto findDto = findService.findById(postId);
 
+        // 게시글 작성자 조회
+        Long targetUserId = findDto.getMember_id();
 
+        // 채팅방 생성 또는 조회
+        ChatRoom chatRoom = chatRoomService.createRoomOrView(chatUser, targetUserId);
+        ChatRoomDto chatRoomDto = new ChatRoomDto(chatRoom);
+
+        return GlobalResponse.success(chatRoomDto);
+    }
+    */
 }

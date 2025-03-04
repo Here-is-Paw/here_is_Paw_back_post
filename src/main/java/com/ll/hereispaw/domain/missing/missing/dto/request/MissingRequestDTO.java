@@ -1,16 +1,19 @@
 package com.ll.hereispaw.domain.missing.missing.dto.request;
 
-import com.ll.hereispaw.domain.missing.Auhtor.entity.Author;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.locationtech.jts.geom.Point;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class MissingRequestDTO {
     /**
      * 이름, 견종, 유기견 이미지, 지역, 좌표
@@ -23,19 +26,21 @@ public class MissingRequestDTO {
     private String breed;
     @NotBlank(message = "위치는 필수입력입니다.")
     private String geo;
+    @NotBlank(message = "위치는 필수입력입니다.")
     private String location;
+    @NotNull(message = "사진은 필수입력입니다.")
+    MultipartFile file;
 
     private String color;
     private String serialNumber;
-    private boolean gender;
-    private boolean neutered;
-    private int age;
-    private Timestamp lostDate;
+    private Integer gender;
+    private Integer neutered;
+    private Integer age;
+//    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
+    // ISO 8601 형식의 날짜 문자열을 LocalDateTime으로 자동 변환하기 위한 설정 추가
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private LocalDateTime lostDate;
     private String etc;
-    private int reward;
-    private int state;
-
-    private Author author;
-//    @NotBlank(message = "사진은 필수입력입니다.")
-    private String pathUrl;
+    private Integer reward;
+    private Integer missingState;
 }

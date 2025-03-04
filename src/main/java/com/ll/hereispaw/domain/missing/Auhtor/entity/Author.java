@@ -17,7 +17,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "MEMBER")
+//@Tag(name = "MEMBER", description = "Member")
 public class Author extends BaseEntity {
 //    @Column(name="nickname")
+    private Long id;
     private String nickname;
 }

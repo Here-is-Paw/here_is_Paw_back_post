@@ -111,7 +111,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
         if (member == null)
             member = refreshAccessTokenByApiKey(apiKey);
-
         if (member != null)
             rq.setLogin(member);
 

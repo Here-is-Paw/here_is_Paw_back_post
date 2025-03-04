@@ -20,8 +20,11 @@ public class ChatRoomDto {
 
     private Long chatUserId;
     private String chatUserNickname;
+    private String chatUserImageUrl;
+
     private Long targetUserId;
     private String targetUserNickname;
+    private String targetUserImageUrl;
 
     private List<ChatMessageDto> chatMessages = new ArrayList<>();
     //private Member chatUser;
@@ -49,9 +52,11 @@ public class ChatRoomDto {
         //if (chatRoom.getTargetUser() != null) 보류
         this.chatUserId = chatRoom.getChatUser().getId();
         this.chatUserNickname = chatRoom.getChatUser().getNickname();
+        this.chatUserImageUrl = chatRoom.getChatUser().getAvatar();
 
         //if (chatRoom.getTargetUser() != null) 보류
         this.targetUserId = chatRoom.getTargetUser().getId();
         this.targetUserNickname = chatRoom.getTargetUser().getNickname();
+        this.targetUserImageUrl = chatRoom.getChatUser().getAvatar();
     }
 }

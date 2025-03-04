@@ -58,7 +58,7 @@ public class MemberService {
     }
 
     public MemberInfoDto me(Member loginUser) {
-        log.debug("loginUser : {}", loginUser.getUsername());
+        log.debug("loginUser : {}", loginUser.getId());
 
         return new MemberInfoDto(loginUser);
     }
