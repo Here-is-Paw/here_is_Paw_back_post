@@ -1,14 +1,14 @@
 package com.ll.hereispaw.domain.search.search.dto;
 
 import com.ll.hereispaw.domain.find.find.entity.FindPost;
-import com.ll.hereispaw.domain.missing.missing.dto.response.MissingDTO;
-import com.ll.hereispaw.global.error.ErrorCode;
-import com.ll.hereispaw.global.exception.CustomException;
+import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
+@Setter
 public class PostDto {
     private String id;
     private Long post_id;
@@ -23,10 +23,10 @@ public class PostDto {
     public PostDto(Object post) {
         if (post instanceof FindPost) {
             setFind((FindPost) post);
-        }else if (post instanceof MissingDTO) {
-            setMissing((MissingDTO) post);
+        }else if (post instanceof Missing) {
+            setMissing((Missing) post);
         }else {
-            throw new CustomException(ErrorCode.INVALID_TYPE_VALUE);
+//            throw new CustomException(ErrorCode.INVALID_TYPE_VALUE);
         }
     }
 
@@ -41,7 +41,7 @@ public class PostDto {
 //        this.createDate = LocalDateTime.now();
     }
 
-    private void setMissing(MissingDTO post) {
+    private void setMissing(Missing post) {
         log.debug("missing : {}", post.getId());
         this.id = "missing_" + post.getId();
         this.post_id = post.getId();

@@ -1,6 +1,5 @@
 package com.ll.hereispaw.domain.search.search.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ll.hereispaw.domain.search.search.dto.PostDto;
 import com.ll.hereispaw.domain.search.search.service.PostDocumentService;
 import com.ll.hereispaw.global.globalDto.GlobalResponse;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
     private final PostDocumentService postDocumentService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
 
     @GetMapping("add")
     public GlobalResponse<String> add(PostDto postDto) {

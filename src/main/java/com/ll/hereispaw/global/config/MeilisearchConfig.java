@@ -38,15 +38,13 @@ public class MeilisearchConfig {
             }
 
             HashMap<String, Integer> typoSettings = new HashMap<>();
-            typoSettings.put("oneTypo", 50);
-            typoSettings.put("twoTypos", 40);
+            typoSettings.put("oneTypo", 40);
+            typoSettings.put("twoTypos", 50);
 
             TypoTolerance typoTolerance = new TypoTolerance().setMinWordSizeForTypos(typoSettings);
             Settings settings = new Settings().setTypoTolerance(typoTolerance);
 
-            settings.setRankingRules(new String[]{"words", "typo", "proximity", "attribute", "sort", "exactness"}
-
-            );
+//            settings.setRankingRules(new String[]{"words", "typo", "proximity", "attribute", "sort", "exactness"});
 
             index.updateSettings(settings);
             log.debug("📌 메일리서치 세팅 적용 완료");
