@@ -1,9 +1,11 @@
 package com.ll.hereispaw.domain.find.find.dto;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
+
 
 import java.time.LocalDateTime;
+import org.locationtech.jts.geom.Point;
+
 
 @Getter
 @Setter

@@ -15,7 +15,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         Info info = new Info()
-                .title("StockNote API")
+                .title("Hers's paw API")
                 .version("v1.0.0");
 
         String securitySchemeName = "JWT";

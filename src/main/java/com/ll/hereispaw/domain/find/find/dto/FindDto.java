@@ -1,11 +1,15 @@
 package com.ll.hereispaw.domain.find.find.dto;
 
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.geo.Point;
+
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Point;
 
 @Getter
 @Setter
@@ -23,6 +27,8 @@ public class FindDto {
     private String gender; // 성별
     private String etc; // 기타 특징
 
+    @Column(name = "geo")
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
     private Point geo; // 좌표 (타입 확인 필요)
     private int age; // 나이
 

@@ -1,18 +1,53 @@
 server:
-  port: 8080
+  port: 8090
 spring:
-  output:
-    ansi:
-      enabled: ALWAYS
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            redirect-uri: "${custom.site.backUrl}/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            client-name: Kakao    # 클라이언트 이름
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me    # 사용자 정보 조회 URI
+            user-name-attribute: id    # 사용자 정보에서 사용자 이름에 해당하는 속성
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     open-in-view: false # OSIV 설정 끄기
-  profiles:
-    active: dev
-    include: secret
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health  # 이 부분 추가
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html  # Swagger UI 경로
+  api-docs:
+    path: /api-docs        # API 문서 경로
+
+custom:
+  prod:
+    cookieDomain: pawpaw.kknaks.site
+    frontUrl: "https://www.${custom.prod.cookieDomain}"
+    backUrl: "https://api.${custom.prod.cookieDomain}"
+  site:
+    name: "pawpaw"
+    cookieDomain: "${custom.prod.cookieDomain}"
+    frontUrl: "${custom.prod.frontUrl}"
+    backUrl: "${custom.prod.backUrl}"

@@ -16,9 +16,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/find")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173",
-        allowedHeaders = "*",
-        allowCredentials = "true")
+// @CrossOrigin(origins = "http://localhost:5173",
+//        allowedHeaders = "*",
+//        allowCredentials = "true")
 public class FindController {
 
     private final FindService findService;

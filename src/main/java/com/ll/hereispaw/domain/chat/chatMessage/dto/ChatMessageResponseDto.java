@@ -8,12 +8,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class ChatMessageResponseDto {
+    private Long memberId;
     private Long chatMessageId;
     private String memberNickname;
     private String content;
     private LocalDateTime createdDate;
 
     public ChatMessageResponseDto(ChatMessage chatMessage, Member loginUser) {
+        this.memberId = chatMessage.getMember().getId();
         this.chatMessageId = chatMessage.getId();
         this.memberNickname = chatMessage.getMember().equals(loginUser) ? "me" : chatMessage.getMember().getNickname();
         this.content = chatMessage.getContent();

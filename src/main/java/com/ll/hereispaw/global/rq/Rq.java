@@ -3,6 +3,7 @@ package com.ll.hereispaw.global.rq;
 
 import com.ll.hereispaw.domain.member.member.entity.Member;
 import com.ll.hereispaw.domain.member.member.service.MemberService;
+import com.ll.hereispaw.global.config.AppConfig;
 import com.ll.hereispaw.global.security.SecurityUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -62,10 +63,10 @@ public class Rq {
     public void setCookie(String name, String value) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
-                .domain("localhost")
+                .domain(AppConfig.getSiteBackUrl())
                 .sameSite("Strict")
                 .secure(true)
-//                .httpOnly(true)
+                .httpOnly(true)
                 .httpOnly(false)
                 .build();
         resp.addHeader("Set-Cookie", cookie.toString());
@@ -85,7 +86,7 @@ public class Rq {
     public void deleteCookie(String name) {
         ResponseCookie cookie = ResponseCookie.from(name, null)
                 .path("/")
-                .domain("localhost")
+                .domain(AppConfig.getSiteBackUrl())
                 .sameSite("Strict")
                 .secure(true)
                 .httpOnly(true)

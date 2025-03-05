@@ -21,11 +21,11 @@ public class MyPetRequest {
 
     private String color;
     private String serialNumber;
-    private Integer gender;
-    private boolean neutered;
 
     @Min(value = 0, message = "성별은 0, 1, 2 중 하나여야 합니다.")
     @Max(value = 2, message = "성별은 0, 1, 2 중 하나여야 합니다.")
+    private Integer gender;
+    private boolean neutered;
     private Integer age;
     private String etc;
 

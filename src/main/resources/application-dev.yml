@@ -1,6 +1,8 @@
 server:
   port: 8090
 spring:
+  hikari:
+    connection-init-sql: "SET search_path TO public, topology, tiger;"
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -8,15 +10,9 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
     open-in-view: false # OSIV 설정 끄기
-
-logging:
-  level:
-    root: info
-    com.ll.hereispaw : debug
-custom:
-  dev:
-    cookieDomain: localhost
-    frontUrl: "http://${custom.dev.cookieDomain}:5173"
-    backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
