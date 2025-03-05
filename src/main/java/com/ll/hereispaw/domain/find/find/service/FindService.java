@@ -6,9 +6,9 @@ import com.ll.hereispaw.domain.find.find.entity.FindPost;
 import com.ll.hereispaw.domain.find.find.entity.Photo;
 import com.ll.hereispaw.domain.find.find.repository.FindPhotoRepository;
 import com.ll.hereispaw.domain.find.find.repository.FindRepository;
+import com.ll.hereispaw.domain.missing.missing.dto.response.CreatePostEventDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.processing.Find;
 import org.locationtech.jts.geom.Point;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,7 +28,7 @@ public class FindService {
     private final FindPhotoRepository findPhotoRepository;
 
     //카프카 발행자 템플릿
-    private final KafkaTemplate<Object, Object> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public Long saveFind(
             String title,
@@ -77,6 +76,9 @@ public class FindService {
             .postMemberId(savedPost.getMember_id())
             .build();
         kafkaTemplate.send("dog-face-request", dogFaceRequestDto);
+
+        kafkaTemplate.send("create-post", new CreatePostEventDto(savedPost));
+
         return savedPost.getId(); // 저장된 find_post_id 반환
     }
 

@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.geo.Point;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -130,13 +129,13 @@ public class InitData {
 
                 String[] findBreeds = {"골든리트리버", "말티즈", "토이푸들", "비숑프리제", "시베리안 허스키"};
 
-                Point[] geoPoints = {
-                        new Point(37.5665, 126.9780), // 서울 중심부
-                        new Point(37.5209, 127.1230), // 서울 강동구
-                        new Point(37.4989, 127.0299), // 서울 강남구
-                        new Point(37.6511, 127.0481), // 서울 노원구
-                        new Point(37.5665, 126.8001)  // 서울 강서구
-                };
+//                Point[] geoPoints = {
+//                        new Point(37.5665, 126.9780), // 서울 중심부
+//                        new Point(37.5209, 127.1230), // 서울 강동구
+//                        new Point(37.4989, 127.0299), // 서울 강남구
+//                        new Point(37.6511, 127.0481), // 서울 노원구
+//                        new Point(37.5665, 126.8001)  // 서울 강서구
+//                };
 
                 String[] findLocations = {
                         "서울시 중구 명동 인근 공원",
@@ -187,7 +186,7 @@ public class InitData {
                     findPost.setTitle(titles[i]);
                     findPost.setSituation(situations[i]);
                     findPost.setBreed(findBreeds[i]);
-                    findPost.setGeo(geoPoints[i]);
+//                    findPost.setGeo(geoPoints[i]);
                     findPost.setLocation(findLocations[i]);
                     findPost.setName(findNames[i]);
                     findPost.setColor(findColors[i]);
