@@ -1,31 +1,26 @@
 package com.ll.hereispaw.domain.search.search.document;
 
-import com.ll.hereispaw.domain.search.search.dto.PostDto;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@Getter
+@Data
+@NoArgsConstructor  // 기본 생성자 추가
+@AllArgsConstructor // 모든 필드가 있는 생성자 추가 (필수는 아님)
 public class PostDocument{
+    @NonNull
+    private String id;
+
+    private long post_id;
 
     @NonNull
-    private final String id;
-    @NonNull
-    private final Long post_id;
-    @NonNull
-    private final String breed;
-    @NonNull
-    private final String location;
-    private final int type; // 0 = 실종 1 = 발견
-//    private final LocalDateTime createDate;
-    private final String name;
+    private String breed;
 
-    public PostDocument(PostDto postDto) {
-        this.id = postDto.getId();
-        this.post_id = postDto.getPost_id();
-        this.name = postDto.getName();
-        this.breed = postDto.getBreed();
-        this.location = postDto.getLocation();
-        this.type = postDto.getType();
-//        this.createDate = postDto.getCreateDate();
-    }
+    @NonNull
+    private String location;
+
+    private int type; // 0 = 실종 1 = 발견
+
+    private String name;
 }

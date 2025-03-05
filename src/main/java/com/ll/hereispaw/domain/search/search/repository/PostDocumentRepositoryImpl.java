@@ -1,6 +1,6 @@
 package com.ll.hereispaw.domain.search.search.repository;
 
-import com.ll.hereispaw.domain.search.search.dto.PostDto;
+import com.ll.hereispaw.domain.search.search.document.PostDocument;
 import com.ll.hereispaw.global.config.MeilisearchConfig;
 import com.ll.hereispaw.standard.Ut.Ut;
 import com.meilisearch.sdk.Index;
@@ -23,9 +23,9 @@ public class PostDocumentRepositoryImpl implements PostDocumentRepository {
     }
 
     @Override
-    public void save(PostDto postDto, String indexName) {
+    public void save(PostDocument postDoc, String indexName) {
         getIndex(indexName).addDocuments(
-                Ut.json.toString(postDto)
+                Ut.json.toString(postDoc)
         );
     }
 

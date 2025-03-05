@@ -1,6 +1,6 @@
 package com.ll.hereispaw.domain.search.search.controller;
 
-import com.ll.hereispaw.domain.search.search.dto.PostDto;
+import com.ll.hereispaw.domain.search.search.document.PostDocument;
 import com.ll.hereispaw.domain.search.search.service.PostDocumentService;
 import com.ll.hereispaw.global.globalDto.GlobalResponse;
 import com.meilisearch.sdk.model.SearchResult;
@@ -19,8 +19,8 @@ public class PostController {
     private final PostDocumentService postDocumentService;
 
     @GetMapping("add")
-    public GlobalResponse<String> add(PostDto postDto) {
-        postDocumentService.add(postDto);
+    public GlobalResponse<String> add(PostDocument postDoc) {
+        postDocumentService.add(postDoc, "post");
         return GlobalResponse.createSuccess("메일리서치 저장 완료");
     }
 

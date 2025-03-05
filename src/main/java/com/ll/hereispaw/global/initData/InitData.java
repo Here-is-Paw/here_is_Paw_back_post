@@ -10,7 +10,6 @@ import com.ll.hereispaw.domain.missing.Auhtor.entity.Author;
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
 import com.ll.hereispaw.domain.missing.missing.service.MissingService;
-import com.ll.hereispaw.domain.search.search.dto.PostDto;
 import com.ll.hereispaw.domain.search.search.repository.PostDocumentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,8 +106,8 @@ public class InitData {
 
                     missingRepository.save(missing);
 
-                    PostDto postDto = new PostDto(missing);
-                    postDocumentRepository.save(postDto, "post");
+//                    PostDocument postDoc = new PostDocument(missing);
+//                    postDocumentRepository.save(postDoc, IndexName.POST.getIndexName());
                     log.info("✅ 실종 등록 완료: {} ({} - {})", missing.getName(), missing.getBreed(), missing.getLocation());
                 }
 
@@ -203,9 +202,8 @@ public class InitData {
 
                     FindPost savedPost = findRepository.save(findPost);
 
-                    PostDto postDto = new PostDto(savedPost);
-
-                    postDocumentRepository.save(postDto, "post");
+//                    PostDocument postDoc = new PostDocument(savedPost);
+//                    postDocumentRepository.save(postDoc, IndexName.POST.getIndexName());
 
                     // Photo 생성
                     Photo photo = new Photo();
