@@ -3,7 +3,11 @@ package com.ll.hereispaw.domain.find.find.repository;
 import com.ll.hereispaw.domain.find.find.entity.FindPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public interface FindRepository extends JpaRepository<FindPost, Long> {
+    List<FindPost> findByModifiedAtBefore(LocalDateTime date);
 //    @Query(value = "SELECT f FROM FindPost f " +
 //            "WHERE ST_DWithin(" +
 //            "    ST_Point(CAST(SPLIT_PART(f.geo, ',', 1) AS DOUBLE), " +

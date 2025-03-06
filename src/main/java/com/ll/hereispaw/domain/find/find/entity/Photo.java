@@ -1,5 +1,6 @@
 package com.ll.hereispaw.domain.find.find.entity;
 
+import com.ll.hereispaw.global.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,11 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Photo {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+public class Photo extends BaseEntity {
 
     private String path_url; // 이미지 경로
 
