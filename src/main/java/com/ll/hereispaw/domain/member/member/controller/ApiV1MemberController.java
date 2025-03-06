@@ -57,8 +57,10 @@ public class ApiV1MemberController {
         return GlobalResponse.success(loginUser);
     }
 
-    @PatchMapping("/radius-update")
+    @PatchMapping("/radius")
     public GlobalResponse<String> radius_update(@LoginUser Member loginUser, Double radius) {
+        log.debug("radius : {}", radius);
+
         memberService.radius_update(loginUser, radius);
         return GlobalResponse.success("로케이션 업데이트");
     }
