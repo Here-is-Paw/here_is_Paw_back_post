@@ -8,6 +8,9 @@ import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
 import com.ll.hereispaw.domain.missing.missing.service.MissingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,8 @@ public class InitData {
     private final MemberService memberService;
     private final MissingService missingService;
     private final MissingRepository missingRepository;
+
+    GeometryFactory geometryFactory = new GeometryFactory();
 
     @Bean
     @Order(3)
@@ -84,7 +89,12 @@ public class InitData {
                     Author assignedAuthor = (i % 3 == 0) ? author1 : (i % 3 == 1) ? author2 : author3;
 
                     // PostGIS POINT 형식으로 좌표 저장 (경도, 위도 순서)
-                    String geoPoint = "POINT(" + locations[i][1] + " " + locations[i][0] + ")";
+                    Point geoPoint = geometryFactory.createPoint(
+                            new Coordinate(
+                                    (Double)locations[i][1],  // 경도
+                                    (Double)locations[i][0]   // 위도
+                            )
+                    );
 
                     // 엔티티 직접 생성하여 저장 (DTO와 생성자 문제 회피)
                     Missing missing = Missing.builder()
