@@ -198,7 +198,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void radius_update(Member loginUser, Integer radius) {
+    public void radius_update(Member loginUser, Double radius) {
         Member user = memberRepository.findById(loginUser.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
