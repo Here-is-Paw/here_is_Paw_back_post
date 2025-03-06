@@ -7,6 +7,7 @@ import com.ll.hereispaw.domain.find.find.entity.Photo;
 import com.ll.hereispaw.domain.find.find.repository.FindPhotoRepository;
 import com.ll.hereispaw.domain.find.find.repository.FindRepository;
 import com.ll.hereispaw.domain.missing.missing.dto.response.CreatePostEventDto;
+import com.ll.hereispaw.domain.search.search.document.PostState;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
@@ -77,7 +78,7 @@ public class FindService {
             .build();
         kafkaTemplate.send("dog-face-request", dogFaceRequestDto);
 
-        kafkaTemplate.send("create-post", new CreatePostEventDto(savedPost));
+        kafkaTemplate.send("create-post", new CreatePostEventDto(savedPost, PostState.CREATE.getCode()));
 
         return savedPost.getId(); // 저장된 find_post_id 반환
     }

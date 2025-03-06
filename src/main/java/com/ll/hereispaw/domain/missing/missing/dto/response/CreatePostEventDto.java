@@ -28,17 +28,19 @@ public class CreatePostEventDto {
 
     private String name;
 
-    public CreatePostEventDto(Object post) {
+    private int state;
+
+    public CreatePostEventDto(Object post, int state) {
         if (post instanceof FindPost) {
-            setFind((FindPost) post);
+            setFind((FindPost) post, state);
         }else if (post instanceof Missing) {
-            setMissing((Missing) post);
+            setMissing((Missing) post, state);
         }else {
             throw new CustomException(ErrorCode.INVALID_TYPE_VALUE);
         }
     }
 
-    private void setFind(FindPost post) {
+    private void setFind(FindPost post, int state) {
         log.debug("find : {}", post.getId());
         this.id = "find_" + post.getId();
         this.post_id = post.getId();
@@ -49,7 +51,7 @@ public class CreatePostEventDto {
 //        this.createDate = LocalDateTime.now();
     }
 
-    private void setMissing(Missing post) {
+    private void setMissing(Missing post, int state) {
         log.debug("missing : {}", post.getId());
         this.id = "missing_" + post.getId();
         this.post_id = post.getId();

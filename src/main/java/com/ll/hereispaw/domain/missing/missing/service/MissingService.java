@@ -9,6 +9,7 @@ import com.ll.hereispaw.domain.missing.missing.dto.response.CreatePostEventDto;
 import com.ll.hereispaw.domain.missing.missing.dto.response.MissingResponseDto;
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
+import com.ll.hereispaw.domain.search.search.document.PostState;
 import com.ll.hereispaw.global.error.ErrorCode;
 import com.ll.hereispaw.global.exception.CustomException;
 import com.ll.hereispaw.standard.Ut.GeoUt;
@@ -101,7 +102,7 @@ public class MissingService {
                 .build();
         kafkaTemplate.send("dog-face-request", dogFaceRequestDto);
 
-        kafkaTemplate.send("create-post", new CreatePostEventDto(missing));
+        kafkaTemplate.send("create-post", new CreatePostEventDto(missing, PostState.CREATE.getCode()));
 
 //        s3Upload(missing, file);
         return new MissingResponseDto(missing);

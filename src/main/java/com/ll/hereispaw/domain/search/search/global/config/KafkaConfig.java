@@ -1,6 +1,6 @@
 package com.ll.hereispaw.domain.search.search.global.config;
 
-import com.ll.hereispaw.domain.search.search.document.PostDocument;
+import com.ll.hereispaw.domain.search.search.dto.PostEventDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,14 +22,14 @@ public class KafkaConfig {
     private String kafkaServer;
 
     @Bean
-    public ConsumerFactory<String, PostDocument> consumerFactory() {
+    public ConsumerFactory<String, PostEventDto> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        JsonDeserializer<PostDocument> jsonDeserializer = new JsonDeserializer<>(PostDocument.class);
+        JsonDeserializer<PostEventDto> jsonDeserializer = new JsonDeserializer<>(PostEventDto.class);
         jsonDeserializer.addTrustedPackages("com.ll.hereispaw.domain.search.search.document");
 
         // 헤더에 상대가 보낸 클래스값이 자동 포함됨. ex. A객체(id, username, nickname)
@@ -44,8 +44,8 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PostDocument> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PostDocument> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, PostEventDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PostEventDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
 
         return factory;

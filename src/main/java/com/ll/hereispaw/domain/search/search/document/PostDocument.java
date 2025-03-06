@@ -1,13 +1,10 @@
 package com.ll.hereispaw.domain.search.search.document;
 
-import lombok.AllArgsConstructor;
+import com.ll.hereispaw.domain.search.search.dto.PostEventDto;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
-@NoArgsConstructor  // 기본 생성자 추가
-@AllArgsConstructor // 모든 필드가 있는 생성자 추가 (필수는 아님)
 public class PostDocument{
     @NonNull
     private String id;
@@ -23,4 +20,13 @@ public class PostDocument{
     private int type; // 0 = 실종 1 = 발견
 
     private String name;
+
+    public PostDocument(PostEventDto postEventDto) {
+        this.id = postEventDto.getId();
+        this.post_id = postEventDto.getPost_id();
+        this.breed = postEventDto.getBreed();
+        this.location = postEventDto.getLocation();
+        this.type = postEventDto.getType();
+        this.name = postEventDto.getName();
+    }
 }
