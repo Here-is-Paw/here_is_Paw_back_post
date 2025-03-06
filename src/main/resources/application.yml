@@ -7,14 +7,6 @@ spring:
   profiles:
     active: dev
     include: secret
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   servlet:
     multipart:
       enabled: true
@@ -29,7 +21,7 @@ spring:
               - profile_nickname
               - profile_image
               - account_email
-            redirect-uri: "${custom.dev.backUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "${custom.site.backUrl}/{action}/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             client-name: Kakao    # 클라이언트 이름
         provider:
@@ -39,7 +31,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me    # 사용자 정보 조회 URI
             user-name-attribute: id    # 사용자 정보에서 사용자 이름에 해당하는 속성
   kafka:
-    bootstrap-servers: localhost:19092
+    bootstrap-servers: 43.203.223.85:19092
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
@@ -47,13 +39,27 @@ spring:
       properties:
         spring.json.trusted.packages: com.ll.hereispaw.domain.noti.dto.kafka
         spring.json.use.type.headers: false
+logging:
+  level:
+    root: info
+    com.ll.hereispaw : debug
+    org.hibernate.spatial: debug
 springdoc:
   swagger-ui:
     path: /swagger-ui.html  # Swagger UI 경로
   api-docs:
     path: /api-docs        # API 문서 경로
-logging:
-  level:
-    root: info
-    com.ll.hereispaw : debug, warn
-
+custom:
+  dev:
+    cookieDomain: localhost
+    frontUrl: "http://${custom.dev.cookieDomain}:5173"
+    backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
+  prod:
+    cookieDomain: pawpaw.kknaks.site
+    frontUrl: "https://www.${custom.prod.cookieDomain}"
+    backUrl: "https://api.${custom.prod.cookieDomain}"
+  site:
+    name: "PawPaw"
+    cookieDomain: "${custom.dev.cookieDomain}"
+    frontUrl: "${custom.dev.frontUrl}"
+    backUrl: "${custom.dev.backUrl}"

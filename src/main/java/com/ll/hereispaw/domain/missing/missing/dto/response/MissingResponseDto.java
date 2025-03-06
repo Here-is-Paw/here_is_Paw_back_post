@@ -2,6 +2,7 @@ package com.ll.hereispaw.domain.missing.missing.dto.response;
 
 import com.ll.hereispaw.domain.missing.missing.entity.Missing;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
@@ -24,13 +25,13 @@ public class MissingResponseDto {
 
     private String color;
     private String serialNumber;
-    private int gender;
-    private int neutered;
-    private int age;
+    private Integer gender;
+    private Integer neutered;
+    private Integer age;
     private LocalDateTime lostDate;
     private String etc;
-    private int reward;
-    private int missingState;
+    private Integer reward;
+    private Integer missingState;
 
     public MissingResponseDto(Missing missing) {
         id = missing.getId();
@@ -39,7 +40,7 @@ public class MissingResponseDto {
 
         name = missing.getName();
         breed = missing.getBreed();
-        geo = missing.getGeo();
+        geo = missing.getGeo().toString();
         location = missing.getLocation();
         color = missing.getColor();
         serialNumber = missing.getSerialNumber();

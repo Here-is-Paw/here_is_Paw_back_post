@@ -22,7 +22,7 @@ services:
       # Tells Seastar (the framework Redpanda uses under the hood) to use 1 core on the system.
       - --smp 1
       # The amount of memory to make available to Redpanda.
-      - --memory 1G
+      - --memory 512MB
       # Mode dev-container uses well-known configuration properties for development in containers.
       - --mode dev-container
       # Enable logs for debugging.

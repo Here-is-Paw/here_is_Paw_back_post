@@ -1,9 +1,11 @@
 package com.ll.hereispaw.domain.find.find.dto;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
+
 
 import java.time.LocalDateTime;
+import org.locationtech.jts.geom.Point;
+
 
 @Getter
 @Setter
@@ -20,15 +22,15 @@ public class FindWithPhotoRequest {
     private String location; // 지역
     private String name; // 이름
     private String color; // 색상
-    private String gender; // 성별
     private String etc; // 기타 특징
 
     private Point geo; // 좌표
 
+    private int gender; // 성별
     private int serial_number; // 등록 번호
     private int age; // 나이
+    private int neutered; // 중성화 유무
 
-    private boolean neutered; // 중성화 유무
 
     private LocalDateTime find_date; // 발견 시간
 

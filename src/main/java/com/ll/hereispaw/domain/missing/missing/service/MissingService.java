@@ -9,11 +9,16 @@ import com.ll.hereispaw.domain.missing.missing.repository.MissingRepository;
 import com.ll.hereispaw.domain.member.member.entity.Member;
 import com.ll.hereispaw.global.error.ErrorCode;
 import com.ll.hereispaw.global.exception.CustomException;
+import com.ll.hereispaw.standard.Ut.GeoUt;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,11 +65,14 @@ public class MissingService {
 
         String pathUrl = s3Upload(missingRequestDto.getFile());
 
+        System.out.println("geo: " + missingRequestDto.getGeo());
+
+
         Missing missing = missingRepository.save(
                 Missing.builder()
                         .name(missingRequestDto.getName())
                         .breed(missingRequestDto.getBreed())
-                        .geo(missingRequestDto.getGeo())
+                        .geo(GeoUt.wktToPoint(missingRequestDto.getGeo()))
                         .location(missingRequestDto.getLocation())
                         .color(missingRequestDto.getColor())
                         .serialNumber(missingRequestDto.getSerialNumber())
@@ -127,7 +135,7 @@ public class MissingService {
 
         missing.setName(missingRequestDTO.getName());
         missing.setBreed(missingRequestDTO.getBreed());
-        missing.setGeo(missingRequestDTO.getGeo());
+        missing.setGeo(GeoUt.wktToPoint(missingRequestDTO.getGeo()));
         missing.setLocation(missingRequestDTO.getLocation());
         missing.setColor(missingRequestDTO.getColor());
         missing.setSerialNumber(missingRequestDTO.getSerialNumber());

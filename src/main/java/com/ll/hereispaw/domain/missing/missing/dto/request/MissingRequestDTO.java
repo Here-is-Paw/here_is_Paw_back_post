@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.locationtech.jts.geom.Point;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -32,14 +33,14 @@ public class MissingRequestDTO {
 
     private String color;
     private String serialNumber;
-    private int gender;
-    private int neutered;
-    private int age;
+    private Integer gender;
+    private Integer neutered;
+    private Integer age;
 //    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     // ISO 8601 형식의 날짜 문자열을 LocalDateTime으로 자동 변환하기 위한 설정 추가
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private LocalDateTime lostDate;
     private String etc;
-    private int reward;
-    private int missingState;
+    private Integer reward;
+    private Integer missingState;
 }

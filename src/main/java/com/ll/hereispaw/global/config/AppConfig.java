@@ -8,18 +8,15 @@ public class AppConfig {
     private static String siteFrontUrl;
 
     @Getter
-    private static String devFrontUrl;
+    private static String siteBackUrl;
 
     @Value("${custom.site.frontUrl}")
     public void setSiteFrontUrl(String siteFrontUrl) {
         AppConfig.siteFrontUrl = siteFrontUrl;
     }
 
-    @Value("${custom.dev.frontUrl}")
-    public void setDevFrontUrl(String devFrontUrl) {
-        AppConfig.devFrontUrl = devFrontUrl;
-    }
-    public static boolean isNotProd() {
-        return true;
+    @Value("${custom.site.frontUrl}")
+    public void setSiteBackUrl(String siteFrontUrl) {
+        AppConfig.siteBackUrl = siteBackUrl;
     }
 }

@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.locationtech.jts.geom.Point;
+import org.springframework.data.relational.core.sql.In;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +33,7 @@ public class Missing extends BaseEntity {
     @Column(length = 50)
     private String breed;
     @NotNull
-    private String geo;
+    private Point geo;
     @NotNull
     private String location;
 
@@ -40,17 +42,17 @@ public class Missing extends BaseEntity {
 
     @Column(length = 15)
     private String serialNumber;
-    private int gender;
-    private int neutered;
-    private int age;
+    private Integer gender;
+    private Integer neutered;
+    private Integer age;
 
 //    @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     private LocalDateTime lostDate;
 
     @Column(columnDefinition = "TEXT")
     private String etc;
-    private int reward;
-    private int missingState;
+    private Integer reward;
+    private Integer missingState;
 
     @NotNull
 //    @OneToMany
