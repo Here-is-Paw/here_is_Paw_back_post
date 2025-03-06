@@ -6,26 +6,27 @@ import com.ll.hereispaw.domain.find.find.entity.FindPost;
 import com.ll.hereispaw.domain.find.find.entity.Photo;
 import com.ll.hereispaw.domain.find.find.repository.FindPhotoRepository;
 import com.ll.hereispaw.domain.find.find.repository.FindRepository;
+import com.ll.hereispaw.domain.missing.missing.dto.response.CreatePostEventDto;
+import com.ll.hereispaw.domain.search.search.document.PostState;
 import com.ll.hereispaw.global.globalDto.GlobalResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.locationtech.jts.geom.Point;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
