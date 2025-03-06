@@ -51,3 +51,11 @@ custom:
     cookieDomain: "${custom.prod.cookieDomain}"
     frontUrl: "${custom.prod.frontUrl}"
     backUrl: "${custom.prod.backUrl}"
+services:
+  auth:
+    url: http://43.203.126.129:8090  # 인증 서비스 URL
+  #    url: http://localhost:8091  # 인증 서비스 URL
+  noti:
+    url: http://43.203.126.129:8097  # 인증 서비스 URL
+  post:
+    url: http://43.203.126.129:8093  # 인증 서비스 URL
