@@ -55,6 +55,8 @@ public class FindService {
 
   @Transactional
   public FindResponse write(MemberDto author, FindRequest request, MultipartFile file) {
+    System.out.println(author);
+
     // 상태 0: 발견, 1: 보호, 2: 완료
     int state = 0;
 
@@ -117,9 +119,10 @@ public class FindService {
   @Transactional
   public FindResponse update(MemberDto author, FindRequest request, Long findingId, MultipartFile file
   ) {
-
     // 상태 0: 발견, 1: 보호, 2: 완료
     int state = 0;
+
+    String image = "";
 
     double x = request.getX();
     double y = request.getY();
@@ -130,7 +133,15 @@ public class FindService {
     Finding finding = findRepository.findById(findingId)
         .orElseThrow(() -> new CustomException(ErrorCode.FINDING_NOT_FOUND));
 
-    s3Delete(finding);
+    // 수정 하기 에서 파일 업로드를 하지 않으면 기존에 등록된 파일 경로 사용, 파일이 있을 경우 s3에 다시 요청 후 url 반환
+    if (file.isEmpty()) {
+      image = finding.getPathUrl();
+
+    } else {
+      s3Delete(finding);
+      image = s3Upload(file);
+    }
+
 
     finding.setTitle(request.getTitle());
     finding.setSituation(request.getSituation());
@@ -148,7 +159,7 @@ public class FindService {
     finding.setFindDate(request.getFind_date());
     finding.setMemberId(author.getId());
     finding.setShelterId(request.getShelter_id());
-    finding.setPathUrl(s3Upload(file));
+    finding.setPathUrl(image);
 
     findRepository.save(finding);
     return new FindResponse(finding);
@@ -160,7 +171,7 @@ public class FindService {
     Finding finding = findRepository.findById(postId)
         .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-    if (!author.getId().equals(finding.getId())) {
+    if (!author.getId().equals(finding.getMemberId())) {
       throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
     }
 

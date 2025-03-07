@@ -60,7 +60,7 @@ public class ApiV1FindController {
             @LoginUser MemberDto author,
             @PathVariable("postId") Long findingId,
             @ModelAttribute FindRequest request,  // Point 필드가 없는 DTO 사용
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart(value = "file", required = false) MultipartFile file) {
 
         return GlobalResponse.success(findService.update(author, request, findingId, file));
     }
