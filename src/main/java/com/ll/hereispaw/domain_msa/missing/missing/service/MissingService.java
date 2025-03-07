@@ -4,8 +4,12 @@ import com.ll.hereispaw.domain_msa.missing.missing.dto.request.MissingRequest;
 import com.ll.hereispaw.domain_msa.missing.missing.dto.response.MissingResponse;
 import com.ll.hereispaw.domain_msa.missing.missing.entity.Missing;
 import com.ll.hereispaw.domain_msa.missing.missing.repository.MissingRepository;
+import com.ll.hereispaw.global_msa.enums.PostState;
+import com.ll.hereispaw.global_msa.enums.Topics;
 import com.ll.hereispaw.global_msa.error.ErrorCode;
 import com.ll.hereispaw.global_msa.exception.CustomException;
+import com.ll.hereispaw.global_msa.kafka.dto.CreatePostEventDto;
+import com.ll.hereispaw.global_msa.kafka.dto.DogFaceRequest;
 import com.ll.hereispaw.global_msa.member.dto.MemberDto;
 import com.ll.hereispaw.standard.Ut_msa.GeoUt;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +35,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Transactional(readOnly = true)
 @Tag(name = " 실종 신고 API", description = "Missing")
 public class MissingService {
+    private static String POST_TYPE = "missing";
+
     @Value("${custom.bucket.name}")
     private String bucketName;
 
@@ -42,6 +49,8 @@ public class MissingService {
     private final S3Client s3Client;
 
     private final MissingRepository missingRepository;
+
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Transactional
     public MissingResponse write(MemberDto author, MissingRequest missingRequest) {
@@ -71,6 +80,18 @@ public class MissingService {
                         .nickname(author.getNickname())
                         .build()
         );
+
+        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
+                .type("save")
+                .image(missing.getPathUrl())
+                .postType(POST_TYPE)
+                .postId(missing.getId())
+                .postMemberId(missing.getAuthorId())
+                .build();
+        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostState.CREATE.getCode()));
 
         return new MissingResponse(missing);
     }
@@ -134,6 +155,9 @@ public class MissingService {
 
         missingRepository.save(missing);
 
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostState.UPDATE.getCode()));
+
         return new MissingResponse(missing);
     }
 
@@ -147,6 +171,9 @@ public class MissingService {
 
         s3Delete(missing.getPathUrl());
         missingRepository.delete(missing);
+
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostState.DELETE.getCode()));
     }
 
     // s3 매서드
