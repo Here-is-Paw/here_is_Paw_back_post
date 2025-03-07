@@ -24,11 +24,11 @@ public class ExceptionControllerAdvice {
         return ErrorResponse.toResponseEntity(ErrorCode.INVALID_INPUT_VALUE);
     }
 
-    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error("HTTP Method Not Supported: {}", e.getMessage(), e);
-        return ErrorResponse.toResponseEntity(ErrorCode.METHOD_NOT_ALLOWED);
-    }
+//    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+//    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+//        log.error("HTTP Method Not Supported: {}", e.getMessage(), e);
+//        return ErrorResponse.toResponseEntity(ErrorCode.METHOD_NOT_ALLOWED);
+//    }
 
     @ExceptionHandler(value = CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
