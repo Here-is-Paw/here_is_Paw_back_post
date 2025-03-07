@@ -4,9 +4,12 @@ import com.ll.hereispaw.domain_msa.find.find.dto.request.FindRequest;
 import com.ll.hereispaw.domain_msa.find.find.dto.response.FindResponse;
 import com.ll.hereispaw.domain_msa.find.find.entity.Finding;
 import com.ll.hereispaw.domain_msa.find.find.repository.FindRepository;
+import com.ll.hereispaw.global_msa.enums.PostState;
+import com.ll.hereispaw.global_msa.enums.Topics;
 import com.ll.hereispaw.global_msa.error.ErrorCode;
 import com.ll.hereispaw.global_msa.exception.CustomException;
 import com.ll.hereispaw.global_msa.globalDto.GlobalResponse;
+import com.ll.hereispaw.global_msa.kafka.dto.CreatePostEventDto;
 import com.ll.hereispaw.global_msa.kafka.dto.DogFaceRequest;
 import com.ll.hereispaw.global_msa.member.dto.MemberDto;
 import com.ll.hereispaw.standard.Ut_msa.GeoUt;
@@ -51,7 +54,7 @@ public class FindService {
   private final S3Client s3Client;
 
   //카프카 발행자 템플릿
-  private final KafkaTemplate<Object, Object> kafkaTemplate;
+  private final KafkaTemplate<String, Object> kafkaTemplate;
 
   @Transactional
   public FindResponse write(MemberDto author, FindRequest request, MultipartFile file) {
@@ -94,7 +97,10 @@ public class FindService {
         .postId(savedPost.getId())
         .postMemberId(savedPost.getMemberId())
         .build();
-    kafkaTemplate.send("dog-face-request", dogFaceRequest);
+    kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+
+    kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+            new CreatePostEventDto(savedPost, PostState.CREATE.getCode()));
 
     return new FindResponse(savedPost);
   }
@@ -151,6 +157,9 @@ public class FindService {
     finding.setPathUrl(s3Upload(file));
 
     findRepository.save(finding);
+
+    kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+            new CreatePostEventDto(finding, PostState.UPDATE.getCode()));
     return new FindResponse(finding);
   }
 
@@ -168,6 +177,8 @@ public class FindService {
 
     findRepository.delete(finding);
 
+    kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+            new CreatePostEventDto(finding, PostState.DELETE.getCode()));
   }
 
   // 일주일 이전에 작성된 게시글 삭제
