@@ -17,7 +17,7 @@ public class CreatePostEventDto {
     private String id;
 
     @NonNull
-    private Long post_id;
+    private Long postId;
 
     @NonNull
     private String imageUrl;
@@ -55,7 +55,7 @@ public class CreatePostEventDto {
     private void setFind(Finding post, int state) {
         log.debug("find : {}", post.getId());
         this.id = "find_" + post.getId();
-        this.post_id = post.getId();
+        this.postId = post.getId();
         this.imageUrl = post.getPathUrl();
         this.name = post.getName();
         this.breed = post.getBreed();
@@ -71,7 +71,7 @@ public class CreatePostEventDto {
     private void setMissing(Missing post, int state) {
         log.debug("missing : {}", post.getId());
         this.id = "missing_" + post.getId();
-        this.post_id = post.getId();
+        this.postId = post.getId();
         this.imageUrl = post.getPathUrl();
         this.name = post.getName();
         this.breed = post.getBreed();
