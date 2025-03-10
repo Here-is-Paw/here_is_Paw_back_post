@@ -54,7 +54,10 @@ public enum ErrorCode {
     // payment
     PAYMENT_FAILED(HttpStatus.BAD_REQUEST, "결제 처리에 실패했습니다."),
     DUPLICATE_PAYMENT(HttpStatus.BAD_REQUEST, "중복된 결제 요청입니다."),
-    PAYMENT_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "결제 정보 저장에 실패했습니다.");
+    PAYMENT_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "결제 정보 저장에 실패했습니다."),
+
+    // GEO 변환 중 오류
+    GEO_INVALID_DATA(HttpStatus.UNPROCESSABLE_ENTITY, "포인트 값이 Null 입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
