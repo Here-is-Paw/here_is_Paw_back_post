@@ -35,7 +35,7 @@ public class GeoUt {
             double longitude = jsonNode.get("x").asDouble();
             double latitude = jsonNode.get("y").asDouble();
 
-            return createPoint(longitude, latitude);
+            return createPoint(latitude, longitude);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
