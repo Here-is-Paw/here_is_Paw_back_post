@@ -91,17 +91,17 @@ public class FindService {
         Finding savedPost = findRepository.save(finding);
 
         //카프카 메시지 발행
-        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
-                .type("save")
-                .image(savedPost.getPathUrl())
-                .postType(POST_TYPE)
-                .postId(savedPost.getId())
-                .postMemberId(savedPost.getMemberId())
-                .build();
-        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
-
-        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
+//        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
+//                .type("save")
+//                .image(savedPost.getPathUrl())
+//                .postType(POST_TYPE)
+//                .postId(savedPost.getId())
+//                .postMemberId(savedPost.getMemberId())
+//                .build();
+//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+//
+//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+//                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
 
         return new FindResponse(savedPost);
     }
@@ -152,9 +152,14 @@ public class FindService {
         Finding finding = findRepository.findById(findingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FINDING_NOT_FOUND));
 
-        s3Delete(finding);
+        String pathUrl = "";
 
-        String pathUrl = request.hasFile() ? s3Upload(request.getFile()) : finding.getPathUrl();
+        if (request.hasFile()) {
+            s3Delete(finding);
+            pathUrl = s3Upload(request.getFile());
+        } else {
+            pathUrl = request.getPathUrl();
+        }
 
         finding.setBreed(request.getBreed());
         finding.setGeo(geo);
@@ -191,7 +196,7 @@ public class FindService {
         Finding finding = findRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-        if (!author.getId().equals(finding.getId())) {
+        if (!author.getId().equals(finding.getMemberId())) {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
