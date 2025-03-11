@@ -96,10 +96,10 @@ public class FindService {
                 .postId(savedPost.getId())
                 .postMemberId(savedPost.getMemberId())
                 .build();
-        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
 
-        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
+//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+//                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
 
         return new FindResponse(savedPost);
     }
