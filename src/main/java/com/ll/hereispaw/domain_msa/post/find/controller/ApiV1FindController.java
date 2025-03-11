@@ -1,4 +1,4 @@
-package com.ll.hereispaw.domain_msa.post.find.controler;
+package com.ll.hereispaw.domain_msa.post.find.controller;
 
 import com.ll.hereispaw.domain_msa.post.find.dto.request.FindCreateRequest;
 import com.ll.hereispaw.domain_msa.post.find.dto.request.FindPatchRequest;

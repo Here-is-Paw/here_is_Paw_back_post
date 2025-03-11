@@ -56,14 +56,13 @@ public class ApiV1MissingController {
     @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public GlobalResponse<MissingResponse> write(
             @LoginUser MemberDto author,
-            @Valid @ModelAttribute MissingCreateRequest request,
-            @RequestPart("file") MultipartFile file
+            @Valid @ModelAttribute MissingCreateRequest request
     ) {
         if (author == null) {
             return GlobalResponse.error(ErrorCode.ACCESS_DENIED);
         }
 
-        return GlobalResponse.success(missingService.write(author, request, file));
+        return GlobalResponse.success(missingService.write(author, request));
     }
 
     // 단건 조회
