@@ -1,6 +1,7 @@
 package com.ll.hereispaw.domain_msa.post.missing.controller;
 
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingCreateRequest;
+import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingDoneRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingPatchRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingListResponse;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingResponse;
@@ -51,7 +52,6 @@ public class ApiV1MissingController {
         return GlobalResponse.success(missingService.radiusList(lat, lng, radius, keyword, category));
     }
 
-
     // 작성
     @PostMapping(value = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public GlobalResponse<MissingResponse> write(
@@ -84,6 +84,21 @@ public class ApiV1MissingController {
         }
 
         return GlobalResponse.success(missingService.update(author, request, missingId));
+    }
+
+    @PatchMapping("/{missingId}/done")
+    public GlobalResponse<String> done(
+            @LoginUser MemberDto author,
+            @PathVariable("missingId") Long missingId,
+            @Valid @RequestBody MissingDoneRequest missingDoneRequest
+    ) {
+        if (author == null) {
+            return GlobalResponse.error(ErrorCode.ACCESS_DENIED);
+        }
+
+        missingService.done(author, missingId, missingDoneRequest);
+
+        return GlobalResponse.success("비활성화 완료");
     }
 
     // 삭제

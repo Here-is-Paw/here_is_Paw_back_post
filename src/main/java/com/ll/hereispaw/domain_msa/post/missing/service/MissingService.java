@@ -1,6 +1,7 @@
 package com.ll.hereispaw.domain_msa.post.missing.service;
 
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingCreateRequest;
+import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingDoneRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingPatchRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingListResponse;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingResponse;
@@ -141,9 +142,14 @@ public class MissingService {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
+        String pathUrl;
 
-        String pathUrl = request.hasFile() ? s3Upload(request.getFile()) : missing.getPathUrl();
-
+        if (request.hasFile()) {
+            s3Delete(missing.getPathUrl());
+            pathUrl = s3Upload(request.getFile());
+        }else {
+            pathUrl = missing.getPathUrl();
+        }
 
         missing.setName(request.getName());
         missing.setBreed(request.getBreed());
@@ -174,7 +180,7 @@ public class MissingService {
     public void delete(MemberDto author, Long missingId) {
         Missing missing = missingRepository.findById(missingId).orElseThrow(() -> new CustomException(ErrorCode.MISSING_NOT_FOUND));
 
-        if (!author.getId().equals(missing.getId())) {
+        if (!author.getId().equals(missing.getMemberId())) {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
@@ -183,6 +189,12 @@ public class MissingService {
 
         kafkaTemplate.send(Topics.SEARCH.getTopicName(),
                 new CreatePostEventDto(missing, PostMethode.DELETE.getCode()));
+    }
+
+    public String done(MemberDto login, Long postId, MissingDoneRequest missingDoneRequest) {
+        
+
+        return null;
     }
 
     // s3 매서드
