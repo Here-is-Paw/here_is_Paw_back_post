@@ -58,10 +58,10 @@ public class MissingService {
 
 
     @Transactional
-    public MissingResponse write(MemberDto author, MissingCreateRequest request, MultipartFile file) {
+    public MissingResponse write(MemberDto author, MissingCreateRequest request) {
         int state = PostState.OPEN.getCode(); // 0 완료
 
-        String pathUrl = s3Upload(file);
+        String pathUrl = request.hasfile() ? s3Upload(request.getFile()) : request.getPathUrl();
 
         Point point = GeoUt.wktToPoint(request.getGeo());
         System.out.println("geo: " + request.getGeo());
