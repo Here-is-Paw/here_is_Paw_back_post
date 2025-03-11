@@ -14,13 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CreatePostEventDto {
     @NonNull
-    private String id;
+    private Long id;
 
     @NonNull
-    private Long postId;
-
-    @NonNull
-    private String imageUrl;
+    private String pathUrl;
 
     @NonNull
     private String breed;
@@ -54,9 +51,8 @@ public class CreatePostEventDto {
 
     private void setFind(Finding post, int state) {
         log.debug("find : {}", post.getId());
-        this.id = "find_" + post.getId();
-        this.postId = post.getId();
-        this.imageUrl = post.getPathUrl();
+        this.id = post.getId();
+        this.pathUrl = post.getPathUrl();
         this.name = post.getName();
         this.breed = post.getBreed();
         this.x = post.getGeo().getX();
@@ -70,9 +66,8 @@ public class CreatePostEventDto {
 
     private void setMissing(Missing post, int state) {
         log.debug("missing : {}", post.getId());
-        this.id = "missing_" + post.getId();
-        this.postId = post.getId();
-        this.imageUrl = post.getPathUrl();
+        this.id = post.getId();
+        this.pathUrl = post.getPathUrl();
         this.name = post.getName();
         this.breed = post.getBreed();
         this.x = post.getGeo().getX();

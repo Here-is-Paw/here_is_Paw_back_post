@@ -58,10 +58,10 @@ public class MissingService {
 
 
     @Transactional
-    public MissingResponse write(MemberDto author, MissingCreateRequest request, MultipartFile file) {
+    public MissingResponse write(MemberDto author, MissingCreateRequest request) {
         int state = PostState.OPEN.getCode(); // 0 완료
 
-        String pathUrl = s3Upload(file);
+        String pathUrl = request.hasfile() ? s3Upload(request.getFile()) : request.getPathUrl();
 
         Point point = GeoUt.wktToPoint(request.getGeo());
         System.out.println("geo: " + request.getGeo());
@@ -88,15 +88,15 @@ public class MissingService {
                         .build()
         );
 
-//        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
-//                .type("save")
-//                .image(missing.getPathUrl())
-//                .postType(POST_TYPE)
-//                .postId(missing.getId())
-//                .postMemberId(missing.getMemberId())
-//                .build();
+        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
+                .type("save")
+                .image(missing.getPathUrl())
+                .postType(POST_TYPE)
+                .postId(missing.getId())
+                .postMemberId(missing.getMemberId())
+                .build();
 //        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
-//
+
 //        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
 //                new CreatePostEventDto(missing, PostMethode.CREATE.getCode()));
 
