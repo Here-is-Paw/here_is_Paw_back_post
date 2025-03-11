@@ -60,8 +60,6 @@ public class FindService {
 
     @Transactional
     public FindResponse write(MemberDto author, FindCreateRequest request, MultipartFile file) {
-
-
         String pathUrl = s3Upload(file);
 
         Point point = GeoUt.createPoint(request.getX(), request.getY());

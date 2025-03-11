@@ -1,8 +1,8 @@
 package com.ll.hereispaw.domain_msa.post.missing.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ll.hereispaw.global_msa.valid.FileOrPathUrlRequired;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@FileOrPathUrlRequired
 public class MissingCreateRequest {
     // 필수값
     @NotBlank(message = "이름은 필수입력입니다.")
@@ -34,6 +35,13 @@ public class MissingCreateRequest {
     private LocalDateTime lostDate;
     private String etc;
 
+    MultipartFile file;
+    String pathUrl;
+
     // missing 고유 값
     private Integer reward;
+
+    public boolean hasfile() {
+        return file != null;
+    }
 }
