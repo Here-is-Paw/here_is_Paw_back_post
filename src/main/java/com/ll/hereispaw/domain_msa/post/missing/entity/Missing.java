@@ -4,6 +4,8 @@ import com.ll.hereispaw.global_msa.jpa.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,7 +53,7 @@ public class Missing extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String etc;
 
-    private LocalDateTime lostDate;
+    private LocalDate lostDate;
 
     // missing 개별
     private Integer state; //상태
