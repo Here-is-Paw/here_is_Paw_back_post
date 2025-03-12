@@ -2,6 +2,8 @@ package com.ll.hereispaw.domain_msa.post.missing.repository;
 
 import com.ll.hereispaw.domain_msa.post.find.entity.Finding;
 import com.ll.hereispaw.domain_msa.post.missing.entity.Missing;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,8 +13,9 @@ import java.util.List;
 
 @Repository
 public interface MissingRepository extends JpaRepository<Missing, Long> {
-
     List<Missing> findByMemberId(Long userId);
+
+    Page<Missing> findByStateNot(Integer state, Pageable pageable);
 
     // 전체 검색
     @Query(value = "SELECT * FROM missing m WHERE ST_DWithin(" +

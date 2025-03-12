@@ -87,7 +87,7 @@ public class ApiV1MissingController {
     }
 
     @PatchMapping("/{missingId}/done")
-    public GlobalResponse<String> done(
+    public GlobalResponse<MissingResponse> done(
             @LoginUser MemberDto author,
             @PathVariable("missingId") Long missingId,
             @Valid @RequestBody MissingDoneRequest missingDoneRequest
@@ -96,9 +96,9 @@ public class ApiV1MissingController {
             return GlobalResponse.error(ErrorCode.ACCESS_DENIED);
         }
 
-        missingService.done(author, missingId, missingDoneRequest);
+        MissingResponse missingResponse = missingService.done(author, missingId, missingDoneRequest);
 
-        return GlobalResponse.success("비활성화 완료");
+        return GlobalResponse.success(missingResponse);
     }
 
     // 삭제

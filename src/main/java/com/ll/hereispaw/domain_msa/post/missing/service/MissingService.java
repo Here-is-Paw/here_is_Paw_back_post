@@ -106,7 +106,7 @@ public class MissingService {
 
     // 전체 조회 페이지 적용
     public Page<MissingListResponse> list(Pageable pageable) {
-        Page<Missing> missingPage = missingRepository.findAll(pageable);
+        Page<Missing> missingPage = missingRepository.findByStateNot(2, pageable);
 
         return missingPage.map(MissingListResponse::new);
     }
@@ -191,10 +191,24 @@ public class MissingService {
                 new CreatePostEventDto(missing, PostMethode.DELETE.getCode()));
     }
 
-    public String done(MemberDto login, Long postId, MissingDoneRequest missingDoneRequest) {
-        
+    @Transactional
+    public MissingResponse done(MemberDto login, Long postId, MissingDoneRequest missingDoneRequest) {
+        Missing missing = missingRepository.findById(postId).orElseThrow(() -> new CustomException(ErrorCode.MISSING_NOT_FOUND));
 
-        return null;
+        if (!login.getId().equals(missing.getMemberId())) {
+            throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
+        }
+
+        missing.setState(missingDoneRequest.getState());
+
+        Missing newMissing = missingRepository.save(missing);
+
+        MissingResponse missingResponse = new MissingResponse(newMissing);
+
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostMethode.DELETE.getCode()));
+
+        return missingResponse;
     }
 
     // s3 매서드
