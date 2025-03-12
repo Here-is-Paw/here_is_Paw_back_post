@@ -96,10 +96,10 @@ public class MissingService {
                 .postId(missing.getId())
                 .postMemberId(missing.getMemberId())
                 .build();
-//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
 
-//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-//                new CreatePostEventDto(missing, PostMethode.CREATE.getCode()));
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostMethode.CREATE.getCode()));
 
         return new MissingResponse(missing);
     }
