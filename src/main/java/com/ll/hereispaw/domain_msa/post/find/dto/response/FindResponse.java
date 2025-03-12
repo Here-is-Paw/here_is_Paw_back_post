@@ -33,6 +33,7 @@ public class FindResponse {
     private Integer neutered; // 중성화 유무
     private String etc; // 기타 특징
     private LocalDateTime findDate; // 발견 시간
+    private String detailAddr; // 상세 주소
 
     // 고유 finding 값
     private String title; // 제목
@@ -65,7 +66,7 @@ public class FindResponse {
         this.neutered = finding.getNeutered();
         this.etc = finding.getEtc();
         this.findDate = finding.getFindDate();
-
+        this.detailAddr = finding.getDetailAddr(); // 상세 주소
         this.title = finding.getTitle();
         this.situation = finding.getSituation();
         this.shelterId = finding.getShelterId();

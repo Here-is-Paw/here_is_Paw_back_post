@@ -28,7 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +62,9 @@ public class FindService {
 
     @Transactional
     public FindResponse write(MemberDto author, FindCreateRequest request, MultipartFile file) {
+
+        System.out.println(request.getDetailAddr());
+
         String pathUrl = s3Upload(file);
 
         Point point = GeoUt.createPoint(request.getX(), request.getY());
@@ -69,6 +74,7 @@ public class FindService {
                 .breed(request.getBreed())
                 .geo(point)
                 .location(request.getLocation())
+                .detailAddr(request.getDetailAddr())
                 .pathUrl(pathUrl)
                 .color(request.getColor())
                 .serialNumber(request.getSerialNumber())
@@ -89,24 +95,31 @@ public class FindService {
         Finding savedPost = findRepository.save(finding);
 
         //카프카 메시지 발행
-        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
-                .type("save")
-                .image(savedPost.getPathUrl())
-                .postType(POST_TYPE)
-                .postId(savedPost.getId())
-                .postMemberId(savedPost.getMemberId())
-                .build();
-        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
-
-        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
+//        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
+//                .type("save")
+//                .image(savedPost.getPathUrl())
+//                .postType(POST_TYPE)
+//                .postId(savedPost.getId())
+//                .postMemberId(savedPost.getMemberId())
+//                .build();
+//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+//
+//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+//                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
 
         return new FindResponse(savedPost);
     }
 
     // 전체 조회 페이지 적용
     public Page<FindListResponse> list(Pageable pageable) {
-        Page<Finding> findingPage = findRepository.findAll(pageable);
+        // 기존 pageable에 정렬 조건을 추가합니다
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "modifiedDate")
+        );
+
+        Page<Finding> findingPage = findRepository.findAll(sortedPageable);
 
         return findingPage.map(FindListResponse::new);
     }
@@ -150,13 +163,19 @@ public class FindService {
         Finding finding = findRepository.findById(findingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FINDING_NOT_FOUND));
 
-        s3Delete(finding);
+        String pathUrl = "";
 
-        String pathUrl = request.hasFile() ? s3Upload(request.getFile()) : finding.getPathUrl();
+        if (request.hasFile()) {
+            s3Delete(finding);
+            pathUrl = s3Upload(request.getFile());
+        } else {
+            pathUrl = request.getPathUrl();
+        }
 
         finding.setBreed(request.getBreed());
         finding.setGeo(geo);
         finding.setLocation(request.getLocation());
+        finding.setDetailAddr(request.getDetailAddr());
         finding.setPathUrl(pathUrl);
 
         finding.setName(request.getName());
@@ -189,7 +208,7 @@ public class FindService {
         Finding finding = findRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
-        if (!author.getId().equals(finding.getId())) {
+        if (!author.getId().equals(finding.getMemberId())) {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 

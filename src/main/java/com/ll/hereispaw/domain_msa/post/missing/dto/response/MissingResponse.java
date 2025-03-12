@@ -5,6 +5,7 @@ import com.ll.hereispaw.global_msa.error.ErrorCode;
 import com.ll.hereispaw.global_msa.exception.CustomException;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -31,7 +32,7 @@ public class MissingResponse {
     private Integer age;
     private Integer neutered;
     private String etc;
-    private LocalDateTime lostDate;
+    private LocalDate lostDate;
 
     // 고유 missing 값
     private Integer reward;

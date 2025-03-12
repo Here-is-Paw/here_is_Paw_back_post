@@ -29,6 +29,7 @@ public class FindCreateRequest {
     private Integer age; // 나이
     private LocalDateTime findDate; // 발견 시간
     private String etc; // 기타 특징
+    private String detailAddr; // 상세 주소
 
     // finding 고유 값
     private String title; // 제목
