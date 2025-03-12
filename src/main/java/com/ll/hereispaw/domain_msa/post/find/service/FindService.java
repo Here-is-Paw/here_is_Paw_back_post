@@ -28,7 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +108,14 @@ public class FindService {
 
     // 전체 조회 페이지 적용
     public Page<FindListResponse> list(Pageable pageable) {
-        Page<Finding> findingPage = findRepository.findAll(pageable);
+        // 기존 pageable에 정렬 조건을 추가합니다
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "modifiedDate")
+        );
+
+        Page<Finding> findingPage = findRepository.findAll(sortedPageable);
 
         return findingPage.map(FindListResponse::new);
     }

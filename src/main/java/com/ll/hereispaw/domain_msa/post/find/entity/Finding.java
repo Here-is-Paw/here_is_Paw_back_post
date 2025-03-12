@@ -29,7 +29,7 @@ public class Finding extends BaseEntity {
     @Column(length = 50)
     private String breed; // 견종
     @NotNull
-    @Column(columnDefinition = "geometry(Point,4326)")
+    @Column(columnDefinition = "geometry(Point, 4326)")
     private Point geo;
     @NotNull
     private String location;
