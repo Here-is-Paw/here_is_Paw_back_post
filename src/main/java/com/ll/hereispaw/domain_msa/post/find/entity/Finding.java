@@ -43,6 +43,7 @@ public class Finding extends BaseEntity {
     private String color; // 색상
     @Column(length = 15)
     private String serialNumber;
+    private String detailAddr; // 상세주소
 
     private Integer gender; // 성별
     private Integer neutered; // 중성화 유무

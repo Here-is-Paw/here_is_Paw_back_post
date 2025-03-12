@@ -62,6 +62,9 @@ public class FindService {
 
     @Transactional
     public FindResponse write(MemberDto author, FindCreateRequest request, MultipartFile file) {
+
+        System.out.println(request.getDetailAddr());
+
         String pathUrl = s3Upload(file);
 
         Point point = GeoUt.createPoint(request.getX(), request.getY());
@@ -71,6 +74,7 @@ public class FindService {
                 .breed(request.getBreed())
                 .geo(point)
                 .location(request.getLocation())
+                .detailAddr(request.getDetailAddr())
                 .pathUrl(pathUrl)
                 .color(request.getColor())
                 .serialNumber(request.getSerialNumber())
@@ -171,6 +175,7 @@ public class FindService {
         finding.setBreed(request.getBreed());
         finding.setGeo(geo);
         finding.setLocation(request.getLocation());
+        finding.setDetailAddr(request.getDetailAddr());
         finding.setPathUrl(pathUrl);
 
         finding.setName(request.getName());
