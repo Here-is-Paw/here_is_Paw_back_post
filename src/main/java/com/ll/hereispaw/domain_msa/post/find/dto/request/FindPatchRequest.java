@@ -22,6 +22,7 @@ public class FindPatchRequest {
     private String location;
 
     private MultipartFile file;
+    private String pathUrl;
 
     // 선택값
     private String name; // 이름
