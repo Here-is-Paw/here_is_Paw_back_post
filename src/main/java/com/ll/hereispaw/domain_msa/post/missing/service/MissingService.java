@@ -1,5 +1,6 @@
 package com.ll.hereispaw.domain_msa.post.missing.service;
 
+import com.ll.hereispaw.domain_msa.post.find.entity.Finding;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingCreateRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingDoneRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingPatchRequest;
@@ -28,7 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +109,14 @@ public class MissingService {
 
     // 전체 조회 페이지 적용
     public Page<MissingListResponse> list(Pageable pageable) {
-        Page<Missing> missingPage = missingRepository.findByStateNot(2, pageable);
+        // 기존 pageable에 정렬 조건을 추가합니다
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "modifiedDate")
+        );
+
+        Page<Missing> missingPage = missingRepository.findByStateNot(2, sortedPageable);
 
         return missingPage.map(MissingListResponse::new);
     }
@@ -138,7 +148,7 @@ public class MissingService {
     ) {
         Missing missing = missingRepository.findById(missingId).orElseThrow(() -> new CustomException(ErrorCode.MISSING_NOT_FOUND));
 
-        if (!author.getId().equals(missing.getId())) {
+        if (!author.getId().equals(missing.getMemberId())) {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
