@@ -96,6 +96,9 @@ dependencies {
     //docker-compose
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
+    // Jackson Java 8 날짜/시간 모듈
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
 }
 
 tasks.withType<Test> {
