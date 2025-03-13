@@ -138,7 +138,7 @@ public class MissingService {
     ) {
         Missing missing = missingRepository.findById(missingId).orElseThrow(() -> new CustomException(ErrorCode.MISSING_NOT_FOUND));
 
-        if (!author.getId().equals(missing.getId())) {
+        if (!author.getId().equals(missing.getMemberId())) {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
