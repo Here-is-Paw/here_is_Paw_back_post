@@ -13,8 +13,8 @@ spring:
       max-file-size: 50MB   # 개별 파일 최대 크기
       max-request-size: 100MB
   kafka:
-#    bootstrap-servers: 43.203.223.85:19092
-    bootstrap-servers: localhost:19092
+    bootstrap-servers: 43.203.223.85:19092
+#    bootstrap-servers: localhost:19092
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:

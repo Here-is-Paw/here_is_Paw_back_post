@@ -17,7 +17,7 @@ public interface MissingRepository extends JpaRepository<Missing, Long> {
 
     Page<Missing> findByStateNot(Integer state, Pageable pageable);
 
-    // 전체 검색
+    // 전체 검색 쿼리 수정
     @Query(value = "SELECT * FROM missing m WHERE ST_DWithin(" +
             "m.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
@@ -25,7 +25,8 @@ public interface MissingRepository extends JpaRepository<Missing, Long> {
             "AND (:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(m.breed) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(m.location) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(m.etc) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(m.etc) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY m.modified_date DESC",
             nativeQuery = true)
     List<Missing> findWithinRadiusWithKeyword(
             @Param("latitude") Double latitude,
@@ -33,13 +34,14 @@ public interface MissingRepository extends JpaRepository<Missing, Long> {
             @Param("radius") Double radius,
             @Param("keyword") String keyword);
 
-    // 품종 검색
+    // 품종 검색 쿼리 수정
     @Query(value = "SELECT * FROM missing m WHERE ST_DWithin(" +
             "m.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
             ":radius) " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
-            "LOWER(m.breed) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(m.breed) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY m.modified_date DESC",
             nativeQuery = true)
     List<Missing> findWithinRadiusWithKeywordSearchBreed(
             @Param("latitude") Double latitude,
@@ -47,12 +49,14 @@ public interface MissingRepository extends JpaRepository<Missing, Long> {
             @Param("radius") Double radius,
             @Param("keyword") String keyword);
 
+    // 지역 검색 쿼리 수정
     @Query(value = "SELECT * FROM missing m WHERE ST_DWithin(" +
             "m.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
             ":radius) " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
-            "LOWER(m.location) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(m.location) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY m.modified_date DESC",
             nativeQuery = true)
     List<Missing> findWithinRadiusWithKeywordSearchLocation(
             @Param("latitude") Double latitude,
