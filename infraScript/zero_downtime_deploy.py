@@ -60,7 +60,7 @@ class ServiceManager:
             return
 
         # 이미지 정리
-        cmd_remove = "docker images | grep '.*/here-is-paw/here_is_paw_api_noti' | grep '<none>' | awk '{print $3}' | xargs -r docker rmi"
+        cmd_remove = "docker images | grep '.*/here-is-paw/here_is_Paw_post' | grep '<none>' | awk '{print $3}' | xargs -r docker rmi"
         output = self._run_command(cmd_remove)
         print("이미지 정리 완료")
 

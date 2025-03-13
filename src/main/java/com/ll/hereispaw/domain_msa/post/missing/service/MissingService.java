@@ -1,6 +1,7 @@
 package com.ll.hereispaw.domain_msa.post.missing.service;
 
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingCreateRequest;
+import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingDoneRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.request.MissingPatchRequest;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingListResponse;
 import com.ll.hereispaw.domain_msa.post.missing.dto.response.MissingResponse;
@@ -95,17 +96,17 @@ public class MissingService {
                 .postId(missing.getId())
                 .postMemberId(missing.getMemberId())
                 .build();
-//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
 
-//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-//                new CreatePostEventDto(missing, PostMethode.CREATE.getCode()));
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostMethode.CREATE.getCode()));
 
         return new MissingResponse(missing);
     }
 
     // 전체 조회 페이지 적용
     public Page<MissingListResponse> list(Pageable pageable) {
-        Page<Missing> missingPage = missingRepository.findAll(pageable);
+        Page<Missing> missingPage = missingRepository.findByStateNot(2, pageable);
 
         return missingPage.map(MissingListResponse::new);
     }
@@ -141,9 +142,14 @@ public class MissingService {
             throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
         }
 
+        String pathUrl;
 
-        String pathUrl = request.hasFile() ? s3Upload(request.getFile()) : missing.getPathUrl();
-
+        if (request.hasFile()) {
+            s3Delete(missing.getPathUrl());
+            pathUrl = s3Upload(request.getFile());
+        }else {
+            pathUrl = missing.getPathUrl();
+        }
 
         missing.setName(request.getName());
         missing.setBreed(request.getBreed());
@@ -183,6 +189,26 @@ public class MissingService {
 
         kafkaTemplate.send(Topics.SEARCH.getTopicName(),
                 new CreatePostEventDto(missing, PostMethode.DELETE.getCode()));
+    }
+
+    @Transactional
+    public MissingResponse done(MemberDto login, Long postId, MissingDoneRequest missingDoneRequest) {
+        Missing missing = missingRepository.findById(postId).orElseThrow(() -> new CustomException(ErrorCode.MISSING_NOT_FOUND));
+
+        if (!login.getId().equals(missing.getMemberId())) {
+            throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
+        }
+
+        missing.setState(missingDoneRequest.getState());
+
+        Missing newMissing = missingRepository.save(missing);
+
+        MissingResponse missingResponse = new MissingResponse(newMissing);
+
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(missing, PostMethode.DELETE.getCode()));
+
+        return missingResponse;
     }
 
     // s3 매서드

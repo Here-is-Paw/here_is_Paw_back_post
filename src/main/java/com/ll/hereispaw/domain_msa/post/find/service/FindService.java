@@ -95,17 +95,17 @@ public class FindService {
         Finding savedPost = findRepository.save(finding);
 
         //카프카 메시지 발행
-//        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
-//                .type("save")
-//                .image(savedPost.getPathUrl())
-//                .postType(POST_TYPE)
-//                .postId(savedPost.getId())
-//                .postMemberId(savedPost.getMemberId())
-//                .build();
-//        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
-//
-//        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
-//                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
+        DogFaceRequest dogFaceRequest = DogFaceRequest.builder()
+                .type("save")
+                .image(savedPost.getPathUrl())
+                .postType(POST_TYPE)
+                .postId(savedPost.getId())
+                .postMemberId(savedPost.getMemberId())
+                .build();
+        kafkaTemplate.send(Topics.DOG_FACE.getTopicName(), dogFaceRequest);
+
+        kafkaTemplate.send(Topics.SEARCH.getTopicName(),
+                new CreatePostEventDto(savedPost, PostMethode.CREATE.getCode()));
 
         return new FindResponse(savedPost);
     }
