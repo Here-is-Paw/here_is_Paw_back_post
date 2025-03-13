@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
+
 @Data
 @Slf4j
 public class CreatePostEventDto {
@@ -39,6 +41,8 @@ public class CreatePostEventDto {
 
     private int state;
 
+    private LocalDateTime createdDate;
+
     public CreatePostEventDto(Object post, int state) {
         if (post instanceof Finding) {
             setFind((Finding) post, state);
@@ -61,7 +65,7 @@ public class CreatePostEventDto {
         this.type = PostType.FIND.getCode();
         this.etc = post.getEtc();
         this.state = state;
-//        this.createDate = LocalDateTime.now();
+        this.createdDate = post.getCreatedDate();
     }
 
     private void setMissing(Missing post, int state) {
@@ -76,6 +80,6 @@ public class CreatePostEventDto {
         this.type = PostType.MISSING.getCode();
         this.etc = post.getEtc();
         this.state = state;
-//        this.createDate = LocalDateTime.now();
+        this.createdDate = post.getCreatedDate();
     }
 }

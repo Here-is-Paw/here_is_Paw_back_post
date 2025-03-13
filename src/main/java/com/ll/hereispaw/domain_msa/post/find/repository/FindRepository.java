@@ -13,7 +13,7 @@ public interface FindRepository extends JpaRepository<Finding, Long> {
 
     List<Finding> findByMemberId(Long userId);
 
-    // 전체 검색
+    // 전체 검색 쿼리 수정 예시 (modifiedDate 기준 정렬)
     @Query(value = "SELECT * FROM finding f WHERE ST_DWithin(" +
             "f.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
@@ -21,7 +21,8 @@ public interface FindRepository extends JpaRepository<Finding, Long> {
             "AND (:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(f.breed) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(f.location) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(f.etc) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(f.etc) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY f.modified_date DESC",
             nativeQuery = true)
     List<Finding> findWithinRadiusWithKeyword(
             @Param("latitude") Double latitude,
@@ -29,13 +30,14 @@ public interface FindRepository extends JpaRepository<Finding, Long> {
             @Param("radius") Double radius,
             @Param("keyword") String keyword);
 
-    // 품종 검색
+    // 품종 검색 쿼리 수정
     @Query(value = "SELECT * FROM finding f WHERE ST_DWithin(" +
             "f.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
             ":radius) " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
-            "LOWER(f.breed) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(f.breed) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY f.modified_date DESC",
             nativeQuery = true)
     List<Finding> findWithinRadiusWithKeywordSearchBreed(
             @Param("latitude") Double latitude,
@@ -43,12 +45,14 @@ public interface FindRepository extends JpaRepository<Finding, Long> {
             @Param("radius") Double radius,
             @Param("keyword") String keyword);
 
+    // 지역 검색 쿼리 수정
     @Query(value = "SELECT * FROM finding f WHERE ST_DWithin(" +
             "f.geo::geography, " +
             "ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, " +
             ":radius) " +
             "AND (:keyword IS NULL OR :keyword = '' OR " +
-            "LOWER(f.location) LIKE LOWER(CONCAT('%', :keyword, '%')))",
+            "LOWER(f.location) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "ORDER BY f.modified_date DESC",
             nativeQuery = true)
     List<Finding> findWithinRadiusWithKeywordSearchLocation(
             @Param("latitude") Double latitude,
