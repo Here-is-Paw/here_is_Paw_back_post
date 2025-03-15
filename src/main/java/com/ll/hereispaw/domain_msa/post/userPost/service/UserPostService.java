@@ -4,6 +4,8 @@ import com.ll.hereispaw.domain_msa.post.find.repository.FindRepository;
 import com.ll.hereispaw.domain_msa.post.missing.repository.MissingRepository;
 import com.ll.hereispaw.domain_msa.post.userPost.dto.response.PostListDto;
 import com.ll.hereispaw.domain_msa.post.userPost.dto.response.PostListResponse;
+import com.ll.hereispaw.global_msa.enums.PostState;
+import com.ll.hereispaw.global_msa.enums.PostType;
 import com.ll.hereispaw.global_msa.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class UserPostService {
                 .map(PostListDto::new)
                 .toList();
 
-        List<PostListDto> missingPostList = missingRepository.findByMemberId(loginUser.getId())
+        List<PostListDto> missingPostList = missingRepository.findByMemberIdAndStateNot(loginUser.getId(), PostState.DONE.getCode())
                 .stream()
                 .map(PostListDto::new)
                 .toList();
