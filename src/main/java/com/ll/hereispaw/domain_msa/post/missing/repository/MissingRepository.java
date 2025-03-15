@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface MissingRepository extends JpaRepository<Missing, Long> {
-    List<Missing> findByMemberId(Long userId);
+    List<Missing> findByMemberIdAndStateNot(Long memberId, Integer state);
 
     Page<Missing> findByStateNot(Integer state, Pageable pageable);
 
